@@ -25,3 +25,13 @@ export type MongoSchemaObj = {
   count: number
   fields: SchemaFieldObj[]
 }
+
+export type MySQLSchemaFieldObj = {
+  fieldName: string
+  type: string
+  isNullable: string
+  key: string
+  default: string
+  extra: string
+  valueExamples: string[]
+}

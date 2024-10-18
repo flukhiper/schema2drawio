@@ -5,6 +5,10 @@ import MxGeometry from '../models/MxGeometry'
 export type Field = {
   name: string
   type: string
+  nullable?: string
+  indexed?: string
+  default?: string
+  extra?: string
   value?: string
   description?: string
 }

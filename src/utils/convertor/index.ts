@@ -1,5 +1,7 @@
-import convertMongoSchemaToTable from './convertMongoSchemaToTable'
+import convertFromMongo from './convertFromMongo'
+import convertFromMySQL from './convertFromMySQL'
 
 export default {
-  convertMongoSchemaToTable,
+  convertFromMongo,
+  convertFromMySQL,
 }

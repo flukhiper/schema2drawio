@@ -27,13 +27,14 @@ const convertMySQLSchemaToTable = (name: string, fields: MySQLSchemaField[]): Ta
 
 const convertFromMySQL = (directoryPath: string, files: string[]) => {
   const database = new Database()
+  const databalseName = path.basename(directoryPath)
 
   files.forEach((file) => {
     const filePath = path.join(directoryPath, file)
     const schemaRawTxt = fs.readFileSync(filePath, 'utf-8')
 
     const lines = schemaRawTxt.split('\n')
-    const schemaFieldObjs = lines.map((line) => {
+    const schemaFieldObjs = lines.map((line: string) => {
       const [fieldName, type, isNullable, key, defaultValue, extra, ...valueExamples] = line.split(',')
       const field: MySQLSchemaFieldObj = {
         fieldName,
@@ -48,14 +49,14 @@ const convertFromMySQL = (directoryPath: string, files: string[]) => {
     })
     const mysqlSchema = MySQLSchema.parseMySQLSchemaFieldObj(schemaFieldObjs)
     const tableName = path.basename(filePath, path.extname(filePath))
-    const result = convertMySQLSchemaToTable(tableName, mysqlSchema.getFields())
+    const result = convertMySQLSchemaToTable(`${databalseName}.${tableName}`, mysqlSchema.getFields())
 
     database.addCollection(result)
   })
 
   const xmlString = database.toXMLString()
   const outDir = path.join('output')
-  const outputFilePath = path.join(outDir, `${path.basename(directoryPath)}.xml`)
+  const outputFilePath = path.join(outDir, `${databalseName}.xml`)
 
   fs.writeFileSync(outputFilePath, xmlString)
   console.log(`XML has been written to ${outputFilePath}`)
